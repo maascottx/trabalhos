@@ -1,0 +1,199 @@
+using System;
+
+namespace TrabalhoAlunos
+{
+    struct Aluno
+    {
+        public string Nome;
+        public int Idade;
+        public int Nota1;
+        public int Nota2;
+        public int Nota3;
+    }
+
+    class Program
+    {
+        static Aluno[] alunos = new Aluno[20];
+        static int totalAlunos = 0;
+
+        static void Main(string[] args)
+        {
+            int opcao = -1;
+
+            while (opcao != 0)
+            {
+                Console.WriteLine("\n--- MENU ---");
+                Console.WriteLine("1 - Adicionar aluno");
+                Console.WriteLine("2 - Mostrar alunos");
+                Console.WriteLine("3 - Procurar aluno");
+                Console.WriteLine("4 - Alterar notas");
+                Console.WriteLine("5 - Estatísticas gerais (Pessoa 2)");
+                Console.WriteLine("6 - Ordenar alunos (Pessoa 2)");
+                Console.WriteLine("0 - Sair");
+                Console.Write("Opção: ");
+
+                opcao = int.Parse(Console.ReadLine());
+
+                if (opcao == 1)
+                    AdicionarAluno();
+                else if (opcao == 2)
+                    MostrarAlunos();
+                else if (opcao == 3)
+                    ProcurarAluno();
+                else if (opcao == 4)
+                    AlterarNotas();
+                else if (opcao == 5)
+                    EstatisticasGerais(); // Pessoa 2
+                else if (opcao == 6)
+                    OrdenarAlunos();      // Pessoa 2
+                else if (opcao == 0)
+                    Console.WriteLine("A sair...");
+                else
+                    Console.WriteLine("Opção inválida.");
+            }
+        }
+
+        // Miguel
+
+        static void AdicionarAluno()
+        {
+            if (totalAlunos == alunos.Length)
+            {
+                Console.WriteLine("Array cheio.");
+                return;
+            }
+
+            Aluno a;
+
+            Console.Write("Nome: ");
+            a.Nome = Console.ReadLine();
+
+            if (a.Nome == "")
+            {
+                Console.WriteLine("Nome inválido.");
+                return;
+            }
+
+            Console.Write("Idade (10-20): ");
+            a.Idade = int.Parse(Console.ReadLine());
+
+            if (a.Idade < 10 || a.Idade > 20)
+            {
+                Console.WriteLine("Idade inválida.");
+                return;
+            }
+
+            a.Nota1 = LerNota("Nota 1");
+            a.Nota2 = LerNota("Nota 2");
+            a.Nota3 = LerNota("Nota 3");
+
+            alunos[totalAlunos] = a;
+            totalAlunos++;
+
+            Console.WriteLine("Aluno adicionado!");
+        }
+
+        static int LerNota(string texto)
+        {
+            Console.Write(texto + " (0-20): ");
+            int nota = int.Parse(Console.ReadLine());
+
+            if (nota < 0 || nota > 20)
+            {
+                Console.WriteLine("Nota inválida.");
+                return 0;
+            }
+
+            return nota;
+        }
+
+        static void MostrarAlunos()
+        {
+            if (totalAlunos == 0)
+            {
+                Console.WriteLine("Sem alunos.");
+                return;
+            }
+
+            for (int i = 0; i < totalAlunos; i++)
+            {
+                Console.WriteLine(
+                    alunos[i].Nome + " | " +
+                    alunos[i].Idade + " | " +
+                    alunos[i].Nota1 + " | " +
+                    alunos[i].Nota2 + " | " +
+                    alunos[i].Nota3
+                );
+            }
+        }
+
+        static void ProcurarAluno()
+        {
+            Console.Write("Nome: ");
+            string nome = Console.ReadLine();
+
+            for (int i = 0; i < totalAlunos; i++)
+            {
+                if (alunos[i].Nome == nome)
+                {
+                    Console.WriteLine("Encontrado:");
+                    Console.WriteLine(
+                        alunos[i].Nome + " | " +
+                        alunos[i].Idade + " | " +
+                        alunos[i].Nota1 + " | " +
+                        alunos[i].Nota2 + " | " +
+                        alunos[i].Nota3
+                    );
+                    return;
+                }
+            }
+
+            Console.WriteLine("Aluno não existe.");
+        }
+
+        static void AlterarNotas()
+        {
+            Console.Write("Nome: ");
+            string nome = Console.ReadLine();
+
+            for (int i = 0; i < totalAlunos; i++)
+            {
+                if (alunos[i].Nome == nome)
+                {
+                    alunos[i].Nota1 = LerNota("Nova Nota 1");
+                    alunos[i].Nota2 = LerNota("Nova Nota 2");
+                    alunos[i].Nota3 = LerNota("Nova Nota 3");
+
+                    Console.WriteLine("Notas alteradas!");
+                    return;
+                }
+            }
+
+            Console.WriteLine("Aluno não encontrado.");
+        }
+
+        // Ramalho
+
+        // Estatísticas Globais:
+        // média da turma
+        // melhor aluno
+        // pior aluno
+        // maior nota
+        // menor nota
+        // nº de positivas / negativas
+        // % de aprovados
+        static void EstatisticasGerais()
+        {
+            // A implementar pela Pessoa 2
+        }
+
+        // Ordenar alunos:
+        // A-Z
+        // Média maior para menor
+        static void OrdenarAlunos()
+        {
+            // A implementar pela Pessoa 2
+        }
+    }
+}
+
