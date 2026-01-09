@@ -117,13 +117,12 @@ namespace TrabalhoTGPSI
 
             for (int i = 0; i < totalAlunos; i++)
             {
-                Console.WriteLine(
-                    alunos[i].Nome + " | " +
-                    alunos[i].Idade + " | " +
-                    alunos[i].Nota1 + " | " +
-                    alunos[i].Nota2 + " | " +
-                    alunos[i].Nota3
-                );
+                Console.WriteLine("\n---- Alunos ----");
+                Console.WriteLine("Nome: " + alunos[i].Nome);
+                Console.WriteLine("Idade: " + alunos[i].Idade);
+                Console.WriteLine("Nota1: " + alunos[i].Nota1);
+                Console.WriteLine("Nota2: " + alunos[i].Nota2);
+                Console.WriteLine("Nota3: " + alunos[i].Nota3);
             }
         }
 
@@ -137,13 +136,12 @@ namespace TrabalhoTGPSI
                 if (alunos[i].Nome == nome)
                 {
                     Console.WriteLine("Encontrado:");
-                    Console.WriteLine(
-                        alunos[i].Nome + " | " +
-                        alunos[i].Idade + " | " +
-                        alunos[i].Nota1 + " | " +
-                        alunos[i].Nota2 + " | " +
-                        alunos[i].Nota3
-                    );
+                    Console.WriteLine("Nome: " + alunos[i].Nome);
+                    Console.WriteLine("Idade: " + alunos[i].Idade);
+                    Console.WriteLine("Nota1: " + alunos[i].Nota1);
+                    Console.WriteLine("Nota2: " + alunos[i].Nota2);
+                    Console.WriteLine("Nota3: " + alunos[i].Nota3);
+
                     return;
                 }
             }
@@ -196,4 +194,3 @@ namespace TrabalhoTGPSI
         }
     }
 }
-
