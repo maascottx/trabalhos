@@ -53,7 +53,6 @@ namespace TrabalhoTGPSI
             }
         }
 
-        // Miguel
 
         static void AdicionarAluno()
         {
