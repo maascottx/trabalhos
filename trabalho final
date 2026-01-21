@@ -1,0 +1,357 @@
+using System;
+
+namespace TrabalhoTGPSI
+{
+    // Estrutura que representa um aluno
+    struct Aluno
+    {
+        public string Nome;   // Nome do aluno
+        public int Idade;     // Idade do aluno
+        public int Nota1;     // Nota da 1ª avaliação
+        public int Nota2;     // Nota da 2ª avaliação
+        public int Nota3;     // Nota da 3ª avaliação
+    }
+
+    class Program
+    {
+        static Aluno[] alunos = new Aluno[20]; // Array que armazena todos os alunos (máx. 20)
+        static int totalAlunos = 0;            // Contador de alunos atualmente cadastrados
+
+        static void Main(string[] args)
+        {
+            int opcao = -1; // Variável para armazenar a opção do menu
+
+            while (opcao != 0) // Loop principal do menu
+            {
+                Console.WriteLine("\n--- MENU ---");
+                Console.WriteLine("1 - Adicionar aluno");
+                Console.WriteLine("2 - Mostrar alunos");
+                Console.WriteLine("3 - Procurar aluno");
+                Console.WriteLine("4 - Alterar notas");
+                Console.WriteLine("5 - Estatísticas gerais");
+                Console.WriteLine("6 - Ordenar alunos");
+                Console.WriteLine("7 - Relatório final");
+                Console.WriteLine("0 - Sair");
+                Console.Write("Opção: ");
+
+                opcao = int.Parse(Console.ReadLine());
+
+                // Ligação das opções às funções correspondentes
+                if (opcao == 1)
+                    AdicionarAluno();
+                else if (opcao == 2)
+                    MostrarAlunos();
+                else if (opcao == 3)
+                    ProcurarAluno();
+                else if (opcao == 4)
+                    AlterarNotas();
+                else if (opcao == 5)
+                    EstatisticasGerais();
+                else if (opcao == 6)
+                    OrdenarAlunos();
+                else if (opcao == 7)
+                    RelatorioFinal();
+                else if (opcao == 0)
+                    Console.WriteLine("A sair...");
+                else
+                    Console.WriteLine("Opção inválida.");
+            }
+        }
+
+        // Função para adicionar um novo aluno
+        static void AdicionarAluno()
+        {
+            if (totalAlunos == alunos.Length) // Verifica se o array está cheio
+            {
+                Console.WriteLine("Array cheio.");
+                return;
+            }
+
+            Aluno a;
+
+            Console.Write("Nome: ");
+            a.Nome = Console.ReadLine();
+
+            if (a.Nome == "") // Validação: nome não pode ser vazio
+            {
+                Console.WriteLine("Nome inválido.");
+                return;
+            }
+
+            Console.Write("Idade (10-20): ");
+            a.Idade = int.Parse(Console.ReadLine());
+
+            if (a.Idade < 10 || a.Idade > 20) // Validação: idade entre 10 e 20
+            {
+                Console.WriteLine("Idade inválida.");
+                return;
+            }
+
+            // Ler as 3 notas usando função de validação
+            a.Nota1 = LerNota("Nota 1");
+            a.Nota2 = LerNota("Nota 2");
+            a.Nota3 = LerNota("Nota 3");
+
+            // Adiciona o aluno ao array e incrementa o total
+            alunos[totalAlunos] = a;
+            totalAlunos++;
+
+            Console.WriteLine("Aluno adicionado!");
+        }
+
+        // Função auxiliar para ler uma nota e validar
+        static int LerNota(string texto)
+        {
+            Console.Write(texto + " (0-20): ");
+            int nota = int.Parse(Console.ReadLine());
+
+            if (nota < 0 || nota > 20) // Validação: nota entre 0 e 20
+            {
+                Console.WriteLine("Nota inválida.");
+                return 0;
+            }
+
+            return nota;
+        }
+
+        // Função para mostrar todos os alunos cadastrados
+        static void MostrarAlunos()
+        {
+            if (totalAlunos == 0)
+            {
+                Console.WriteLine("Sem alunos.");
+                return;
+            }
+
+            for (int i = 0; i < totalAlunos; i++)
+            {
+                Console.WriteLine("\n---- Aluno ----");
+                Console.WriteLine("Nome: " + alunos[i].Nome);
+                Console.WriteLine("Idade: " + alunos[i].Idade);
+                Console.WriteLine("Nota1: " + alunos[i].Nota1);
+                Console.WriteLine("Nota2: " + alunos[i].Nota2);
+                Console.WriteLine("Nota3: " + alunos[i].Nota3);
+            }
+        }
+
+        // Função para procurar um aluno pelo nome
+        static void ProcurarAluno()
+        {
+            Console.Write("Nome: ");
+            string nome = Console.ReadLine();
+
+            for (int i = 0; i < totalAlunos; i++)
+            {
+                if (alunos[i].Nome == nome) // Compara o nome do aluno
+                {
+                    Console.WriteLine("Encontrado:");
+                    Console.WriteLine("Nome: " + alunos[i].Nome);
+                    Console.WriteLine("Idade: " + alunos[i].Idade);
+                    Console.WriteLine("Nota1: " + alunos[i].Nota1);
+                    Console.WriteLine("Nota2: " + alunos[i].Nota2);
+                    Console.WriteLine("Nota3: " + alunos[i].Nota3);
+                    return;
+                }
+            }
+
+            Console.WriteLine("Aluno não existe."); // Mensagem se não encontrado
+        }
+
+        // Função para alterar as notas de um aluno existente
+        static void AlterarNotas()
+        {
+            Console.Write("Nome: ");
+            string nome = Console.ReadLine();
+
+            for (int i = 0; i < totalAlunos; i++)
+            {
+                if (alunos[i].Nome == nome) // Localiza o aluno
+                {
+                    // Lê novas notas usando validação
+                    alunos[i].Nota1 = LerNota("Nova Nota 1");
+                    alunos[i].Nota2 = LerNota("Nova Nota 2");
+                    alunos[i].Nota3 = LerNota("Nova Nota 3");
+
+                    Console.WriteLine("Notas alteradas!");
+                    return;
+                }
+            }
+
+            Console.WriteLine("Aluno não encontrado."); // Mensagem se não encontrado
+        }
+
+        // Função para calcular média de um aluno
+        static double MediaAluno(Aluno a)
+        {
+            return (a.Nota1 + a.Nota2 + a.Nota3) / 3.0;
+        }
+
+        // Estatísticas gerais da turma
+        static void EstatisticasGerais()
+        {
+            if (totalAlunos == 0)
+            {
+                Console.WriteLine("Sem alunos para estatísticas.");
+                return;
+            }
+
+            double somaMedias = 0;
+            double melhorMedia = MediaAluno(alunos[0]);
+            double piorMedia = MediaAluno(alunos[0]);
+
+            int melhorAluno = 0;
+            int piorAluno = 0;
+
+            int maiorNota = alunos[0].Nota1;
+            int menorNota = alunos[0].Nota1;
+
+            int positivas = 0;
+            int negativas = 0;
+            int aprovados = 0;
+
+            for (int i = 0; i < totalAlunos; i++)
+            {
+                double media = MediaAluno(alunos[i]);
+                somaMedias += media;
+
+                // Melhor e pior aluno
+                if (media > melhorMedia)
+                {
+                    melhorMedia = media;
+                    melhorAluno = i;
+                }
+
+                if (media < piorMedia)
+                {
+                    piorMedia = media;
+                    piorAluno = i;
+                }
+
+                // Contagem de notas positivas e negativas
+                int[] notas = { alunos[i].Nota1, alunos[i].Nota2, alunos[i].Nota3 };
+                foreach (int nota in notas)
+                {
+                    if (nota >= 10)
+                        positivas++;
+                    else
+                        negativas++;
+
+                    if (nota > maiorNota)
+                        maiorNota = nota;
+
+                    if (nota < menorNota)
+                        menorNota = nota;
+                }
+
+                // Verifica se aluno está aprovado (média >= 10)
+                if (media >= 10)
+                    aprovados++;
+            }
+
+            double mediaTurma = somaMedias / totalAlunos;
+            double percentagemAprovados = (double)aprovados / totalAlunos * 100;
+
+            Console.WriteLine("\n--- ESTATÍSTICAS GERAIS ---");
+            Console.WriteLine("Média da turma: " + mediaTurma.ToString("F2"));
+            Console.WriteLine("Melhor aluno: " + alunos[melhorAluno].Nome + " (" + melhorMedia.ToString("F2") + ")");
+            Console.WriteLine("Pior aluno: " + alunos[piorAluno].Nome + " (" + piorMedia.ToString("F2") + ")");
+            Console.WriteLine("Maior nota: " + maiorNota);
+            Console.WriteLine("Menor nota: " + menorNota);
+            Console.WriteLine("Notas positivas: " + positivas);
+            Console.WriteLine("Notas negativas: " + negativas);
+            Console.WriteLine("Percentagem de aprovados: " + percentagemAprovados.ToString("F2") + "%");
+        }
+
+        // Ordenação de alunos
+        static void OrdenarAlunos()
+        {
+            if (totalAlunos == 0)
+            {
+                Console.WriteLine("Sem alunos para ordenar.");
+                return;
+            }
+
+            Console.WriteLine("\n1 - Ordenar por Nome (A-Z)");
+            Console.WriteLine("2 - Ordenar por Média (maior para menor)");
+            Console.Write("Opção: ");
+
+            int op = int.Parse(Console.ReadLine());
+
+            if (op == 1)
+            {
+                OrdenarAlunosPorNome();
+                Console.WriteLine("Alunos ordenados por nome.");
+            }
+            else if (op == 2)
+            {
+                OrdenarAlunosPorMedia();
+                Console.WriteLine("Alunos ordenados por média.");
+            }
+            else
+            {
+                Console.WriteLine("Opção inválida.");
+            }
+        }
+
+        // Relatório final da turma
+        static void RelatorioFinal()
+        {
+            if (totalAlunos == 0)
+            {
+                Console.WriteLine("Sem alunos para gerar relatório.");
+                return;
+            }
+
+            Console.WriteLine("\n--- RELATÓRIO FINAL ---");
+
+            // Lista todos os alunos
+            MostrarAlunos();
+
+            // Estatísticas gerais
+            EstatisticasGerais();
+
+            // Ordenação por nome
+            Console.WriteLine("\nAlunos ordenados por Nome (A-Z):");
+            OrdenarAlunosPorNome();
+            MostrarAlunos();
+
+            // Ordenação por média
+            Console.WriteLine("\nAlunos ordenados por Média (maior para menor):");
+            OrdenarAlunosPorMedia();
+            MostrarAlunos();
+        }
+
+        // Funções auxiliares para ordenação
+        static void OrdenarAlunosPorNome()
+        {
+            for (int i = 0; i < totalAlunos - 1; i++)
+            {
+                for (int j = i + 1; j < totalAlunos; j++)
+                {
+                    if (string.Compare(alunos[i].Nome, alunos[j].Nome) > 0)
+                    {
+                        Aluno temp = alunos[i];
+                        alunos[i] = alunos[j];
+                        alunos[j] = temp;
+                    }
+                }
+            }
+        }
+
+        static void OrdenarAlunosPorMedia()
+        {
+            for (int i = 0; i < totalAlunos - 1; i++)
+            {
+                for (int j = i + 1; j < totalAlunos; j++)
+                {
+                    if (MediaAluno(alunos[j]) > MediaAluno(alunos[i]))
+                    {
+                        Aluno temp = alunos[i];
+                        alunos[i] = alunos[j];
+                        alunos[j] = temp;
+                    }
+                }
+            }
+        }
+    }
+}
